@@ -12,13 +12,7 @@ struct ContentView: View {
 
     
     var body: some View {
-        Text("""
-             Car Make: \(car.make)
-             Car Model: \(car.model)
-             Car topSpeed(125mph): \(car.topSpeed)
-             Car acceleration(0-60): \(car.acceleration)s
-             Car handling: \(car.handling)
-             """)
+        Text(car.displayStats())
             .padding()
             
     }
