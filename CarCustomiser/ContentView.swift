@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    let starterCars = StarterCars()
+    @State var starterCars = StarterCars()
     @State private var selectedCar: Int = 0 {
         didSet {
             if selectedCar >= starterCars.cars.count {
@@ -22,13 +22,27 @@ struct ContentView: View {
 
     
     var body: some View {
+        let exhaustPackageBinding = Binding<Bool> (
+            get: {self.exhaustPackage},
+            set: { newValue in
+                self.exhaustPackage = newValue
+                if newValue == true {
+                    starterCars.cars[selectedCar].topSpeed += 5
+                } else {
+                    starterCars.cars[selectedCar].topSpeed -= 5
+                }
+            }
+        )
+            
         Form {
             VStack(alignment: .leading, spacing: 20) {
                 Text(starterCars.cars[selectedCar].displayStats())
                 Button("Next Car", action: {
                     selectedCar += 1
                 })
-                Toggle("Exhaust Package", isOn: $exhaustPackage)
+            }
+            Section {
+                Toggle("Exhaust Package", isOn: exhaustPackageBinding)
                 Toggle("Tires Package", isOn: $tiresPackage)
             }
         }
