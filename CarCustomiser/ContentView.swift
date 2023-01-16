@@ -8,15 +8,38 @@
 import SwiftUI
 
 struct ContentView: View {
-    let car =  Car(make:"Mazda", model:"MX-5", topSpeed: 125, acceleration:7.7, handling: 5)
+    let starterCars = StarterCars()
+    @State private var selectedCar: Int = 0 {
+        didSet {
+            if selectedCar >= starterCars.cars.count {
+                selectedCar = 0
+            }
+        }
+    }
+    @State private var exhaustPackage = false
+    @State private var tiresPackage = false
+
 
     
     var body: some View {
-        Text(car.displayStats())
-            .padding()
-            
+        Form {
+            VStack(alignment: .leading, spacing: 20) {
+                Text(starterCars.cars[selectedCar].displayStats())
+                Button("Next Car", action: {
+                    selectedCar += 1
+                })
+                Toggle("Exhaust Package", isOn: $exhaustPackage)
+                Toggle("Tires Package", isOn: $tiresPackage)
+            }
+        }
     }
 }
+
+
+
+
+
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
